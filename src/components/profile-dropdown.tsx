@@ -2,6 +2,8 @@
 
 import Link from "next/link"
 import { CreditCard, LogOut, Settings, User } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { authService } from "@/lib/api"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -17,6 +19,17 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function ProfileDropdown() {
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout()
+      router.push("/login")
+    } catch (error) {
+      console.error("Logout failed:", error)
+    }
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -61,7 +74,7 @@ export function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

@@ -1,18 +1,22 @@
-"use client"
+import React from 'react'
+import { cn } from '@/lib/utils'
 
-import { cn } from "@/lib/utils"
+interface MainProps extends React.HTMLAttributes<HTMLElement> {
+  fixed?: boolean
+  ref?: React.Ref<HTMLElement>
+}
 
-export function Main({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLElement>) {
+export const Main = ({ fixed, ...props }: MainProps) => {
   return (
     <main
       className={cn(
-        "flex-1 overflow-hidden px-4 py-6 sm:px-6 lg:px-8",
-        className
+        'peer-[.header-fixed]/header:mt-16',
+        'px-4 py-6',
+        fixed && 'fixed-main flex grow flex-col overflow-hidden'
       )}
       {...props}
     />
   )
-} 
+}
+
+Main.displayName = 'Main'
