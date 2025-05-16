@@ -5,22 +5,30 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
+import authService from "@/lib/api/auth"
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
   const router = useRouter()
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     setIsLoading(true)
+    setError("")
+
+    // Get form data
+    const formData = new FormData(event.target as HTMLFormElement)
+    const email = formData.get("email") as string
+    const password = formData.get("password") as string
 
     try {
-      // Replace with your authentication logic
-      setTimeout(() => {
-        router.push("/")
-      }, 1000)
+      // Call the auth service to login
+      await authService.login({ email, password })
+      router.push("/dashboard")
     } catch (error) {
       console.error(error)
+      setError("Invalid email or password. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -34,6 +42,7 @@ export function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="name@example.com"
               autoComplete="email"
@@ -47,6 +56,7 @@ export function LoginForm() {
             </div>
             <Input
               id="password"
+              name="password"
               type="password"
               placeholder="••••••••"
               autoComplete="current-password"
@@ -54,6 +64,9 @@ export function LoginForm() {
               required
             />
           </div>
+          {error && (
+            <div className="text-sm text-red-500">{error}</div>
+          )}
           <Button type="submit" disabled={isLoading}>
             {isLoading ? "Logging in..." : "Login"}
           </Button>

@@ -5,25 +5,30 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
+import { authService } from "@/lib/api"
 
 export function ForgotPasswordForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [isEmailSent, setIsEmailSent] = useState(false)
+  const [error, setError] = useState("")
   const router = useRouter()
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     setIsLoading(true)
+    setError("")
+
+    // Get form data
+    const formData = new FormData(event.target as HTMLFormElement)
+    const email = formData.get("email") as string
 
     try {
-      // Replace with your password reset logic
-      setTimeout(() => {
-        setIsEmailSent(true)
-        // Optional: redirect to a confirmation page
-        // router.push("/otp")
-      }, 1000)
+      // Call the auth service to send password reset email
+      await authService.forgotPassword(email)
+      setIsEmailSent(true)
     } catch (error) {
       console.error(error)
+      setError("Failed to send reset link. Please try again.")
     } finally {
       setIsLoading(false)
     }
@@ -45,6 +50,7 @@ export function ForgotPasswordForm() {
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="name@example.com"
                 autoComplete="email"
@@ -52,6 +58,9 @@ export function ForgotPasswordForm() {
                 required
               />
             </div>
+            {error && (
+              <div className="text-sm text-red-500">{error}</div>
+            )}
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Sending reset link..." : "Send reset link"}
             </Button>
