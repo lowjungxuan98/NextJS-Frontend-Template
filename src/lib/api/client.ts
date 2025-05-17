@@ -45,32 +45,33 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config;
     
     // Handle 401 Unauthorized errors for token refresh
-    if (
-      error.response?.status === 401 && 
-      originalRequest && 
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
+    console.log(error.response?.status);
+    // if (
+    //   error.response?.status === 401 && 
+    //   originalRequest && 
+    //   !originalRequest._retry
+    // ) {
+    //   originalRequest._retry = true;
       
-      try {
-        // Attempt to refresh the token
-        const newTokens = await authService.refreshTokens();
+    //   try {
+    //     // Attempt to refresh the token
+    //     const newTokens = await authService.refreshTokens();
         
-        if (newTokens) {
-          // Update the authorization header with the new token
-          originalRequest.headers.Authorization = `Bearer ${newTokens.access.token}`;
+    //     if (newTokens) {
+    //       // Update the authorization header with the new token
+    //       originalRequest.headers.Authorization = `Bearer ${newTokens.access.token}`;
           
-          // Retry the original request with the new token
-          return apiClient(originalRequest);
-        } else {
-          // If token refresh returned null, redirect to login
-          await handleAuthError();
-        }
-      } catch {
-        // If token refresh fails, redirect to login
-        await handleAuthError();
-      }
-    }
+    //       // Retry the original request with the new token
+    //       return apiClient(originalRequest);
+    //     } else {
+    //       // If token refresh returned null, redirect to login
+    //       await handleAuthError();
+    //     }
+    //   } catch {
+    //     // If token refresh fails, redirect to login
+    //     await handleAuthError();
+    //   }
+    // }
     
     return Promise.reject(error);
   }
