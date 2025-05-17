@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import authService from './auth';
 
 /**
@@ -66,7 +66,7 @@ apiClient.interceptors.response.use(
           // If token refresh returned null, redirect to login
           await handleAuthError();
         }
-      } catch (refreshError) {
+      } catch {
         // If token refresh fails, redirect to login
         await handleAuthError();
       }

@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { Suspense } from "react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ResetPasswordForm } from "./reset-password-form"
 
@@ -18,7 +19,9 @@ export default function ResetPasswordPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ResetPasswordForm />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ResetPasswordForm />
+        </Suspense>
       </CardContent>
       <CardFooter>
         <p className="text-center w-full text-sm text-muted-foreground">

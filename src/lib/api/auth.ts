@@ -3,8 +3,7 @@ import {
   RegisterParams, 
   LoginParams, 
   AuthTokens, 
-  AuthResponse,
-  User
+  AuthResponse
 } from './model/auth';
 
 /**
