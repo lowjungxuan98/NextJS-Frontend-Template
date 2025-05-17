@@ -55,25 +55,15 @@ export const sidebarData: SidebarData = {
           icon: IconLayoutDashboard,
         },
         {
-          title: 'Tasks',
-          url: '/tasks',
-          icon: IconChecklist,
-        },
-        {
-          title: 'Apps',
-          url: '/apps',
-          icon: IconPackages,
+          title: 'Users',
+          url: '/users',
+          icon: IconUsers,
         },
         {
           title: 'Chats',
           url: '/chats',
           badge: '3',
           icon: IconMessages,
-        },
-        {
-          title: 'Users',
-          url: '/users',
-          icon: IconUsers,
         },
       ],
     },
